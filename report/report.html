@@ -82,7 +82,7 @@
 
 <p>Formula:</p>
 <p><span class="math display">\[\rho_i = \frac{m_i+1}{n+t/k} + \frac{(t-k)/k \cdot P(w|C)}{n+t/k}\]</span></p><p>Implementation in <code>LMDirichletSimilarity</code> (according to the score function in <code>LMDirichletSimilarity.java</code> from Apache Lucene):</p>
-<p><span class="math display">\[log(1+\frac{freq}{\mu \cdot P(w|C)}) + log{\frac{\mu}{n+\mu}}\]</span></p></li>
+<p><span class="math display">\[log(1+\frac{freq}{\mu \cdot P(w|C)}) + log{\frac{\mu}{dl+\mu}}\]</span></p></li>
 
 <li><p>Language modeling, Jelinek-Mercer smoothing using the corpus, 0.8 of the weight attached to the background probability, query likelihood. (<strong>LMJM</strong>)</p>
 
@@ -199,6 +199,29 @@
 <ul>
 <li>According to my research, Krovetz Stemmer use a hybrid approach and focus on precision. It initally stems the words and checks the result stemmed words. If stemmed words aren&rsquo;t found in dictionary, the algorithm revert the stemmed words.</li>
 <li>Krovetz stemmer aims to maintain semantic and prevent over-stemming. In my opinion, this dataset isn&rsquo;t a very large one so that Porter stemmer have more term matches due to it&rsquo;s smaller vocabulary size.</li>
+</ul></li>
+</ul>
+
+<p><strong>Smoothing Comparison</strong></p>
+
+<p>Because <code>LMDirichletSimilarity</code> is using Dirichlet Prior Smoothing, so I&rsquo;m comparing Dirichlet Prior Smoothing and Jelinek-Mercer Smoothing here.</p>
+
+<ul>
+<li><p>Dirichlet Prior Smoothing</p>
+
+<p>Formula:</p>
+<p><span class="math display">\[P(w|D) = \frac{df + \mu P(w|C}{dl + \mu}\]</span></p></li>
+
+<li><p>Jelinek-Mercer Smoothing</p>
+
+<p>Formula:</p>
+<p><span class="math display">\[P(w|D) = \lambda P(w|D) + (1-\lambda)P(w|C)\]</span></p></li>
+
+<li><p><strong>Comparison</strong>: Dirichlet smoothing adjusts the weight of the corpus probability based on the length of the document. For short documents, the corpus probability plays a larger role, whereas for longer documents, the term frequency in the document becomes more dominant. This makes Dirichlet smoothing more adaptive to datasets where document lengths vary significantly.</p>
+
+<ul>
+<li>Mean of WT2G&rsquo;s document length: 9278</li>
+<li>Variance: 495134949</li>
 </ul></li>
 </ul>
 
@@ -432,14 +455,16 @@
 
 <p>Numbers in the graphs:</p>
 
-<p>Part 1 Graph (Pure ranking functions) (un-interpolated map): https://
-Part 1 Graph (Pure ranking functions) (p@10):
-Part 1 Graph (With DFR similarity) (un-interpolated map):
-Part 1 Graph (With DFR similarity) (p@10):
-Part 2 Graphs (Pure ranking functions) (un-interpolated map):
-Part 2 Graphs (Pure ranking functions) (p@10):
-Part 2 Graphs (Models’ performance statistics) (un-interpolated map):
-Part 2 Graphs (Models’ performance statistics) (p@10):</p>
+<ul>
+<li>Part 1 Graph (Pure ranking functions) (un-interpolated map): [<a href="https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/plot/map_p1.py" target="_blank">https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/plot/map_p1.py</a>]</li>
+<li>Part 1 Graph (Pure ranking functions) (p@10): [<a href="https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/plot/p10_p1.py" target="_blank">https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/plot/p10_p1.py</a>]</li>
+<li>Part 1 Graph (With DFR similarity) (un-interpolated map): [<a href="https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/qrels_401_440/map_dfr.py" target="_blank">https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/qrels_401_440/map_dfr.py</a>]</li>
+<li>Part 1 Graph (With DFR similarity) (p@10): [<a href="https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/qrels_401_440/p10_dfr.py" target="_blank">https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/qrels_401_440/p10_dfr.py</a>]</li>
+<li>Part 2 Graphs (Pure ranking functions) (un-interpolated map): [<a href="https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/plot/map_p2.py" target="_blank">https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/plot/map_p2.py</a>]</li>
+<li>Part 2 Graphs (Pure ranking functions) (p@10): [<a href="https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/plot/p10_p2.py" target="_blank">https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/plot/p10_p2.py</a>]</li>
+<li>Part 2 Graphs (Models’ performance statistics) (un-interpolated map): [<a href="https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/qrels_441_450/map.py" target="_blank">https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/qrels_441_450/map.py</a>]</li>
+<li>Part 2 Graphs (Models’ performance statistics) (p@10): [<a href="https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/qrels_441_450/p10.py" target="_blank">https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/qrels_441_450/p10.py</a>]</li>
+</ul>
 
 
     

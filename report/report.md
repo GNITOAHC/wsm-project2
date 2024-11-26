@@ -48,7 +48,7 @@
 
     Implementation in `LMDirichletSimilarity` (according to the score function in `LMDirichletSimilarity.java` from Apache Lucene):
 
-    $$log(1+\frac{freq}{\mu \cdot P(w|C)}) + log{\frac{\mu}{n+\mu}}$$
+    $$log(1+\frac{freq}{\mu \cdot P(w|C)}) + log{\frac{\mu}{dl+\mu}}$$
 
 3.  Language modeling, Jelinek-Mercer smoothing using the corpus, 0.8 of the weight attached to the background probability, query likelihood. (**LMJM**)
 
@@ -113,6 +113,26 @@ According to `python -m pyserini.index.lucene -options`, we can generate indexes
 -   The top three models are all using Porter stemmer, which indicates that **aggressive stemming effectively reduces vocabulary mismatches and improves retrieval effectiveness**.
     -   According to my research, Krovetz Stemmer use a hybrid approach and focus on precision. It initally stems the words and checks the result stemmed words. If stemmed words aren't found in dictionary, the algorithm revert the stemmed words.
     -   Krovetz stemmer aims to maintain semantic and prevent over-stemming. In my opinion, this dataset isn't a very large one so that Porter stemmer have more term matches due to it's smaller vocabulary size.
+
+**Smoothing Comparison**
+
+Because `LMDirichletSimilarity` is using Dirichlet Prior Smoothing, so I'm comparing Dirichlet Prior Smoothing and Jelinek-Mercer Smoothing here.
+
+-   Dirichlet Prior Smoothing
+
+    Formula:
+
+    $$P(w|D) = \frac{df + \mu P(w|C}{dl + \mu}$$
+
+-   Jelinek-Mercer Smoothing
+
+    Formula:
+
+    $$P(w|D) = \lambda P(w|D) + (1-\lambda)P(w|C)$$
+
+-   **Comparison**: Dirichlet smoothing adjusts the weight of the corpus probability based on the length of the document. For short documents, the corpus probability plays a larger role, whereas for longer documents, the term frequency in the document becomes more dominant. This makes Dirichlet smoothing more adaptive to datasets where document lengths vary significantly.
+    -   Mean of WT2G's document length: 9278
+    -   Variance: 495134949
 
 **Additional Analysis of DFR Models**
 
@@ -201,11 +221,11 @@ Feature list:
 
 Numbers in the graphs:
 
-Part 1 Graph (Pure ranking functions) (un-interpolated map): https://
-Part 1 Graph (Pure ranking functions) (p@10):
-Part 1 Graph (With DFR similarity) (un-interpolated map):
-Part 1 Graph (With DFR similarity) (p@10):
-Part 2 Graphs (Pure ranking functions) (un-interpolated map):
-Part 2 Graphs (Pure ranking functions) (p@10):
-Part 2 Graphs (Models’ performance statistics) (un-interpolated map):
-Part 2 Graphs (Models’ performance statistics) (p@10):
+-   Part 1 Graph (Pure ranking functions) (un-interpolated map): [https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/plot/map_p1.py]
+-   Part 1 Graph (Pure ranking functions) (p@10): [https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/plot/p10_p1.py]
+-   Part 1 Graph (With DFR similarity) (un-interpolated map): [https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/qrels_401_440/map_dfr.py]
+-   Part 1 Graph (With DFR similarity) (p@10): [https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/qrels_401_440/p10_dfr.py]
+-   Part 2 Graphs (Pure ranking functions) (un-interpolated map): [https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/plot/map_p2.py]
+-   Part 2 Graphs (Pure ranking functions) (p@10): [https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/plot/p10_p2.py]
+-   Part 2 Graphs (Models’ performance statistics) (un-interpolated map): [https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/qrels_441_450/map.py]
+-   Part 2 Graphs (Models’ performance statistics) (p@10): [https://github.com/GNITOAHC/wsm-project2/blob/main/rankings/qrels_441_450/p10.py]
