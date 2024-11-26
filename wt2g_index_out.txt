@@ -1,0 +1,188 @@
+Indexing WT2G collection... porter stemmer
+WARNING: Using incubator modules: jdk.incubator.vector
+2024-11-16 01:59:21,010 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:205) - Setting log level to INFO
+2024-11-16 01:59:21,012 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:208) - ============ Loading Index Configuration ============
+2024-11-16 01:59:21,012 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:209) - AbstractIndexer settings:
+2024-11-16 01:59:21,012 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:210) -  + DocumentCollection path: data/collection
+2024-11-16 01:59:21,012 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:211) -  + CollectionClass: JsonCollection
+2024-11-16 01:59:21,013 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:212) -  + Index path: indexes/porter
+2024-11-16 01:59:21,013 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:213) -  + Threads: 1
+2024-11-16 01:59:21,013 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:214) -  + Optimize (merge segments)? false
+11月 16, 2024 1:59:21 上午 org.apache.lucene.store.MMapDirectory lookupProvider
+警告: You are running with Java 22 or later. To make full use of MMapDirectory, please update Apache Lucene.
+2024-11-16 01:59:21,034 INFO  [main] index.IndexCollection (IndexCollection.java:246) - Using DefaultEnglishAnalyzer
+2024-11-16 01:59:21,035 INFO  [main] index.IndexCollection (IndexCollection.java:247) - Stemmer: porter
+2024-11-16 01:59:21,035 INFO  [main] index.IndexCollection (IndexCollection.java:248) - Keep stopwords? false
+2024-11-16 01:59:21,035 INFO  [main] index.IndexCollection (IndexCollection.java:249) - Stopwords file: null
+2024-11-16 01:59:21,103 INFO  [main] index.IndexCollection (IndexCollection.java:197) - IndexCollection settings:
+2024-11-16 01:59:21,103 INFO  [main] index.IndexCollection (IndexCollection.java:198) -  + Generator: DefaultLuceneDocumentGenerator
+2024-11-16 01:59:21,103 INFO  [main] index.IndexCollection (IndexCollection.java:199) -  + Language: en
+2024-11-16 01:59:21,103 INFO  [main] index.IndexCollection (IndexCollection.java:200) -  + Stemmer: porter
+2024-11-16 01:59:21,104 INFO  [main] index.IndexCollection (IndexCollection.java:201) -  + Keep stopwords? false
+2024-11-16 01:59:21,104 INFO  [main] index.IndexCollection (IndexCollection.java:202) -  + Stopwords: null
+2024-11-16 01:59:21,104 INFO  [main] index.IndexCollection (IndexCollection.java:203) -  + Store positions? true
+2024-11-16 01:59:21,104 INFO  [main] index.IndexCollection (IndexCollection.java:204) -  + Store docvectors? true
+2024-11-16 01:59:21,104 INFO  [main] index.IndexCollection (IndexCollection.java:205) -  + Store document "contents" field? false
+2024-11-16 01:59:21,104 INFO  [main] index.IndexCollection (IndexCollection.java:206) -  + Store document "raw" field? true
+2024-11-16 01:59:21,105 INFO  [main] index.IndexCollection (IndexCollection.java:207) -  + Additional fields to index: []
+2024-11-16 01:59:21,105 INFO  [main] index.IndexCollection (IndexCollection.java:208) -  + Whitelist: null
+2024-11-16 01:59:21,105 INFO  [main] index.IndexCollection (IndexCollection.java:209) -  + Pretokenized?: false
+2024-11-16 01:59:21,105 INFO  [main] index.IndexCollection (IndexCollection.java:210) -  + Codec: Lucene99
+2024-11-16 01:59:21,105 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:238) - ============ Indexing Collection ============
+2024-11-16 01:59:21,107 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:247) - Thread pool with 1 threads initialized.
+2024-11-16 01:59:21,107 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:248) - 1 file found in data/collection
+2024-11-16 01:59:21,108 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:249) - Starting to index...
+2024-11-16 02:00:21,111 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:259) - 90,000 documents indexed
+2024-11-16 02:01:21,112 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:259) - 200,000 documents indexed
+2024-11-16 02:01:58,267 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:307) - Indexing Complete! 247,491 documents indexed
+2024-11-16 02:01:58,267 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:308) - ============ Final Counter Values ============
+2024-11-16 02:01:58,267 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:309) - indexed:          247,491
+2024-11-16 02:01:58,268 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:310) - unindexable:            0
+2024-11-16 02:01:58,268 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:311) - empty:                  0
+2024-11-16 02:01:58,268 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:312) - skipped:                0
+2024-11-16 02:01:58,268 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:313) - errors:                 0
+2024-11-16 02:01:58,271 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:316) - Total 247,491 documents indexed in 00:02:37
+Press enter to continue
+Indexing WT2G collection... krovet stemmer
+WARNING: Using incubator modules: jdk.incubator.vector
+2024-11-16 02:02:17,096 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:205) - Setting log level to INFO
+2024-11-16 02:02:17,098 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:208) - ============ Loading Index Configuration ============
+2024-11-16 02:02:17,098 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:209) - AbstractIndexer settings:
+2024-11-16 02:02:17,098 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:210) -  + DocumentCollection path: data/collection
+2024-11-16 02:02:17,098 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:211) -  + CollectionClass: JsonCollection
+2024-11-16 02:02:17,098 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:212) -  + Index path: indexes/krovet
+2024-11-16 02:02:17,098 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:213) -  + Threads: 1
+2024-11-16 02:02:17,099 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:214) -  + Optimize (merge segments)? false
+11月 16, 2024 2:02:17 上午 org.apache.lucene.store.MMapDirectory lookupProvider
+警告: You are running with Java 22 or later. To make full use of MMapDirectory, please update Apache Lucene.
+2024-11-16 02:02:17,121 INFO  [main] index.IndexCollection (IndexCollection.java:246) - Using DefaultEnglishAnalyzer
+2024-11-16 02:02:17,121 INFO  [main] index.IndexCollection (IndexCollection.java:247) - Stemmer: krovet
+2024-11-16 02:02:17,121 INFO  [main] index.IndexCollection (IndexCollection.java:248) - Keep stopwords? false
+2024-11-16 02:02:17,121 INFO  [main] index.IndexCollection (IndexCollection.java:249) - Stopwords file: null
+2024-11-16 02:02:17,185 INFO  [main] index.IndexCollection (IndexCollection.java:197) - IndexCollection settings:
+2024-11-16 02:02:17,186 INFO  [main] index.IndexCollection (IndexCollection.java:198) -  + Generator: DefaultLuceneDocumentGenerator
+2024-11-16 02:02:17,186 INFO  [main] index.IndexCollection (IndexCollection.java:199) -  + Language: en
+2024-11-16 02:02:17,186 INFO  [main] index.IndexCollection (IndexCollection.java:200) -  + Stemmer: krovet
+2024-11-16 02:02:17,186 INFO  [main] index.IndexCollection (IndexCollection.java:201) -  + Keep stopwords? false
+2024-11-16 02:02:17,186 INFO  [main] index.IndexCollection (IndexCollection.java:202) -  + Stopwords: null
+2024-11-16 02:02:17,186 INFO  [main] index.IndexCollection (IndexCollection.java:203) -  + Store positions? true
+2024-11-16 02:02:17,186 INFO  [main] index.IndexCollection (IndexCollection.java:204) -  + Store docvectors? true
+2024-11-16 02:02:17,187 INFO  [main] index.IndexCollection (IndexCollection.java:205) -  + Store document "contents" field? false
+2024-11-16 02:02:17,187 INFO  [main] index.IndexCollection (IndexCollection.java:206) -  + Store document "raw" field? true
+2024-11-16 02:02:17,187 INFO  [main] index.IndexCollection (IndexCollection.java:207) -  + Additional fields to index: []
+2024-11-16 02:02:17,187 INFO  [main] index.IndexCollection (IndexCollection.java:208) -  + Whitelist: null
+2024-11-16 02:02:17,187 INFO  [main] index.IndexCollection (IndexCollection.java:209) -  + Pretokenized?: false
+2024-11-16 02:02:17,187 INFO  [main] index.IndexCollection (IndexCollection.java:210) -  + Codec: Lucene99
+2024-11-16 02:02:17,187 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:238) - ============ Indexing Collection ============
+2024-11-16 02:02:17,189 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:247) - Thread pool with 1 threads initialized.
+2024-11-16 02:02:17,189 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:248) - 1 file found in data/collection
+2024-11-16 02:02:17,189 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:249) - Starting to index...
+2024-11-16 02:03:17,193 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:259) - 100,000 documents indexed
+2024-11-16 02:04:17,199 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:259) - 210,000 documents indexed
+2024-11-16 02:04:54,610 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:307) - Indexing Complete! 247,491 documents indexed
+2024-11-16 02:04:54,610 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:308) - ============ Final Counter Values ============
+2024-11-16 02:04:54,610 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:309) - indexed:          247,491
+2024-11-16 02:04:54,611 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:310) - unindexable:            0
+2024-11-16 02:04:54,611 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:311) - empty:                  0
+2024-11-16 02:04:54,611 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:312) - skipped:                0
+2024-11-16 02:04:54,611 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:313) - errors:                 0
+2024-11-16 02:04:54,614 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:316) - Total 247,491 documents indexed in 00:02:37
+Press enter to continue
+Indexing WT2G collection... no stemmer
+WARNING: Using incubator modules: jdk.incubator.vector
+2024-11-16 02:06:01,094 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:205) - Setting log level to INFO
+2024-11-16 02:06:01,096 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:208) - ============ Loading Index Configuration ============
+2024-11-16 02:06:01,096 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:209) - AbstractIndexer settings:
+2024-11-16 02:06:01,096 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:210) -  + DocumentCollection path: data/collection
+2024-11-16 02:06:01,097 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:211) -  + CollectionClass: JsonCollection
+2024-11-16 02:06:01,097 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:212) -  + Index path: indexes/none
+2024-11-16 02:06:01,097 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:213) -  + Threads: 1
+2024-11-16 02:06:01,097 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:214) -  + Optimize (merge segments)? false
+11月 16, 2024 2:06:01 上午 org.apache.lucene.store.MMapDirectory lookupProvider
+警告: You are running with Java 22 or later. To make full use of MMapDirectory, please update Apache Lucene.
+2024-11-16 02:06:01,121 INFO  [main] index.IndexCollection (IndexCollection.java:246) - Using DefaultEnglishAnalyzer
+2024-11-16 02:06:01,121 INFO  [main] index.IndexCollection (IndexCollection.java:247) - Stemmer: none
+2024-11-16 02:06:01,121 INFO  [main] index.IndexCollection (IndexCollection.java:248) - Keep stopwords? false
+2024-11-16 02:06:01,121 INFO  [main] index.IndexCollection (IndexCollection.java:249) - Stopwords file: null
+2024-11-16 02:06:01,194 INFO  [main] index.IndexCollection (IndexCollection.java:197) - IndexCollection settings:
+2024-11-16 02:06:01,194 INFO  [main] index.IndexCollection (IndexCollection.java:198) -  + Generator: DefaultLuceneDocumentGenerator
+2024-11-16 02:06:01,194 INFO  [main] index.IndexCollection (IndexCollection.java:199) -  + Language: en
+2024-11-16 02:06:01,194 INFO  [main] index.IndexCollection (IndexCollection.java:200) -  + Stemmer: none
+2024-11-16 02:06:01,194 INFO  [main] index.IndexCollection (IndexCollection.java:201) -  + Keep stopwords? false
+2024-11-16 02:06:01,194 INFO  [main] index.IndexCollection (IndexCollection.java:202) -  + Stopwords: null
+2024-11-16 02:06:01,195 INFO  [main] index.IndexCollection (IndexCollection.java:203) -  + Store positions? true
+2024-11-16 02:06:01,195 INFO  [main] index.IndexCollection (IndexCollection.java:204) -  + Store docvectors? true
+2024-11-16 02:06:01,195 INFO  [main] index.IndexCollection (IndexCollection.java:205) -  + Store document "contents" field? false
+2024-11-16 02:06:01,195 INFO  [main] index.IndexCollection (IndexCollection.java:206) -  + Store document "raw" field? true
+2024-11-16 02:06:01,195 INFO  [main] index.IndexCollection (IndexCollection.java:207) -  + Additional fields to index: []
+2024-11-16 02:06:01,195 INFO  [main] index.IndexCollection (IndexCollection.java:208) -  + Whitelist: null
+2024-11-16 02:06:01,195 INFO  [main] index.IndexCollection (IndexCollection.java:209) -  + Pretokenized?: false
+2024-11-16 02:06:01,196 INFO  [main] index.IndexCollection (IndexCollection.java:210) -  + Codec: Lucene99
+2024-11-16 02:06:01,196 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:238) - ============ Indexing Collection ============
+2024-11-16 02:06:01,198 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:247) - Thread pool with 1 threads initialized.
+2024-11-16 02:06:01,199 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:248) - 1 file found in data/collection
+2024-11-16 02:06:01,199 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:249) - Starting to index...
+2024-11-16 02:07:01,203 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:259) - 100,000 documents indexed
+2024-11-16 02:08:01,207 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:259) - 210,000 documents indexed
+2024-11-16 02:08:29,459 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:307) - Indexing Complete! 247,491 documents indexed
+2024-11-16 02:08:29,460 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:308) - ============ Final Counter Values ============
+2024-11-16 02:08:29,460 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:309) - indexed:          247,491
+2024-11-16 02:08:29,460 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:310) - unindexable:            0
+2024-11-16 02:08:29,460 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:311) - empty:                  0
+2024-11-16 02:08:29,460 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:312) - skipped:                0
+2024-11-16 02:08:29,460 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:313) - errors:                 0
+2024-11-16 02:08:29,464 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:316) - Total 247,491 documents indexed in 00:02:28
+
+===
+
+1.439s chenchaoting ❯ python -m pyserini.index.lucene \
+                                  --collection JsonCollection \
+                                  --input data/collection \
+                                  --index indexes/krovetz \
+                                  --stemmer krovetz \
+                                  --generator DefaultLuceneDocumentGenerator \
+                                  --threads 1 \
+                                  --storePositions --storeDocvectors --storeRaw
+WARNING: Using incubator modules: jdk.incubator.vector
+2024-11-23 23:40:30,878 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:205) - Setting log level to INFO
+2024-11-23 23:40:30,880 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:208) - ============ Loading Index Configuration ============
+2024-11-23 23:40:30,880 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:209) - AbstractIndexer settings:
+2024-11-23 23:40:30,880 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:210) -  + DocumentCollection path: data/collection
+2024-11-23 23:40:30,880 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:211) -  + CollectionClass: JsonCollection
+2024-11-23 23:40:30,880 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:212) -  + Index path: indexes/krovetz
+2024-11-23 23:40:30,880 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:213) -  + Threads: 1
+2024-11-23 23:40:30,881 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:214) -  + Optimize (merge segments)? false
+11月 23, 2024 11:40:30 下午 org.apache.lucene.store.MMapDirectory lookupProvider
+警告: You are running with Java 22 or later. To make full use of MMapDirectory, please update Apache Lucene.
+2024-11-23 23:40:30,903 INFO  [main] index.IndexCollection (IndexCollection.java:246) - Using DefaultEnglishAnalyzer
+2024-11-23 23:40:30,903 INFO  [main] index.IndexCollection (IndexCollection.java:247) - Stemmer: krovetz
+2024-11-23 23:40:30,903 INFO  [main] index.IndexCollection (IndexCollection.java:248) - Keep stopwords? false
+2024-11-23 23:40:30,903 INFO  [main] index.IndexCollection (IndexCollection.java:249) - Stopwords file: null
+2024-11-23 23:40:30,968 INFO  [main] index.IndexCollection (IndexCollection.java:197) - IndexCollection settings:
+2024-11-23 23:40:30,968 INFO  [main] index.IndexCollection (IndexCollection.java:198) -  + Generator: DefaultLuceneDocumentGenerator
+2024-11-23 23:40:30,968 INFO  [main] index.IndexCollection (IndexCollection.java:199) -  + Language: en
+2024-11-23 23:40:30,969 INFO  [main] index.IndexCollection (IndexCollection.java:200) -  + Stemmer: krovetz
+2024-11-23 23:40:30,969 INFO  [main] index.IndexCollection (IndexCollection.java:201) -  + Keep stopwords? false
+2024-11-23 23:40:30,969 INFO  [main] index.IndexCollection (IndexCollection.java:202) -  + Stopwords: null
+2024-11-23 23:40:30,969 INFO  [main] index.IndexCollection (IndexCollection.java:203) -  + Store positions? true
+2024-11-23 23:40:30,969 INFO  [main] index.IndexCollection (IndexCollection.java:204) -  + Store docvectors? true
+2024-11-23 23:40:30,969 INFO  [main] index.IndexCollection (IndexCollection.java:205) -  + Store document "contents" field? false
+2024-11-23 23:40:30,969 INFO  [main] index.IndexCollection (IndexCollection.java:206) -  + Store document "raw" field? true
+2024-11-23 23:40:30,969 INFO  [main] index.IndexCollection (IndexCollection.java:207) -  + Additional fields to index: []
+2024-11-23 23:40:30,970 INFO  [main] index.IndexCollection (IndexCollection.java:208) -  + Whitelist: null
+2024-11-23 23:40:30,970 INFO  [main] index.IndexCollection (IndexCollection.java:209) -  + Pretokenized?: false
+2024-11-23 23:40:30,970 INFO  [main] index.IndexCollection (IndexCollection.java:210) -  + Codec: Lucene99
+2024-11-23 23:40:30,970 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:238) - ============ Indexing Collection ============
+2024-11-23 23:40:30,972 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:247) - Thread pool with 1 threads initialized.
+2024-11-23 23:40:30,972 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:248) - 1 file found in data/collection
+2024-11-23 23:40:30,972 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:249) - Starting to index...
+2024-11-23 23:41:30,986 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:259) - 90,000 documents indexed
+2024-11-23 23:42:31,027 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:259) - 180,000 documents indexed
+2024-11-23 23:43:25,746 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:307) - Indexing Complete! 247,491 documents indexed
+2024-11-23 23:43:25,746 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:308) - ============ Final Counter Values ============
+2024-11-23 23:43:25,746 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:309) - indexed:          247,491
+2024-11-23 23:43:25,746 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:310) - unindexable:            0
+2024-11-23 23:43:25,746 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:311) - empty:                  0
+2024-11-23 23:43:25,746 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:312) - skipped:                0
+2024-11-23 23:43:25,746 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:313) - errors:                 0
+2024-11-23 23:43:25,751 INFO  [main] index.AbstractIndexer (AbstractIndexer.java:316) - Total 247,491 documents indexed in 00:02:54

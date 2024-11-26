@@ -1,0 +1,467 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Markdown Preview</title>
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css" />
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.10.0/build/styles/default.min.css" />
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.10.0/build/highlight.min.js"></script>
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css" />
+
+    
+    <script type="text/javascript" src="https://livejs.com/live.js"></script>
+  </head>
+
+  <body>
+    <h1 id="wsm-project-2-building-ir-systems-based-on-the-pyserini-project">WSM Project 2: Building IR systems based on the Pyserini Project</h1>
+
+<h2 id="what-i-did">What I did</h2>
+
+<p><strong>Part 1</strong></p>
+
+<ol>
+<li><p>Generate three kinds of index via command line (no stemming, portor stemmer, krovet stemmer)</p></li>
+
+<li><p>Use <code>autoclass</code> to spawn instance classes from Apache/Lucene&rsquo;s similarity package and create new classes based on <code>LuceneSearcher</code> so that custom searcher can use specified similarity. For instance:</p>
+
+<pre><code class="language-python">class LMJelinekMercerSearcher(LuceneSearcher):
+    pass
+</code></pre></li>
+
+<li><p>Parse the queries and return top 1000 documents for each query in a single file.</p></li>
+
+<li><p>(<em>Addition</em>) Total 9 + 6 runs.</p>
+
+<ul>
+<li>3 (stemming methods) * 3 (ranking functions)</li>
+<li>DFR 6 runs</li>
+</ul></li>
+</ol>
+
+<p><strong>Part 2</strong></p>
+
+<ol>
+<li>Use 3 kinds of stemming methods and the combination of all methods to train 4 models (sklearn RandomForest) and compare their differences.</li>
+<li>(<em>Addition</em>) Total 11 + 8 runs.
+
+<ul>
+<li>3 (stemming methods) * 3 (ranking functions) + DFRSimilarity * 2</li>
+<li>8 models</li>
+</ul></li>
+</ol>
+
+<p><strong>Both</strong></p>
+
+<ol>
+<li>(<em>Addition</em>) Draw graphs of un-interpolated mean average precision.</li>
+<li>(<em>Addition</em>) Draw graphs of P@10.</li>
+<li>Analyze the results.</li>
+</ol>
+
+<h2 id="part-1-ranking-functions">Part 1: Ranking Functions</h2>
+
+<h3 id="ranking-function-explanations">Ranking Function Explanations</h3>
+
+<ol>
+<li><p>OKAPI BM25 (<strong>BM25</strong>)</p>
+
+<p>BM25 Similarity is calculated as <span class="math inline">\(\frac{freq}{freq+k_1 \cdot (1-b+\frac{b \cdot dl}{avgdl})}\)</span> and with {<span class="math inline">\(k_1\)</span> = 2, <span class="math inline">\(b\)</span> = 0.75} will set BM25 to <span class="math inline">\(\frac{tf}{tf+0.5+1.5*dl/avgdl}\)</span></p></li>
+
+<li><p>Language modeling, maximum likelihood estimates with Laplace smoothing and estimated probability from corpus, query likelihood. (<strong>LMMLE</strong>)</p>
+
+<p>This uses <code>LMDirichletSimilarity</code> in Apache Lucene, as it aligns closely with the function provided.</p>
+
+<p>Formula:</p>
+<p><span class="math display">\[\rho_i = \frac{m_i+1}{n+t/k} + \frac{(t-k)/k \cdot P(w|C)}{n+t/k}\]</span></p><p>Implementation in <code>LMDirichletSimilarity</code> (according to the score function in <code>LMDirichletSimilarity.java</code> from Apache Lucene):</p>
+<p><span class="math display">\[log(1+\frac{freq}{\mu \cdot P(w|C)}) + log{\frac{\mu}{n+\mu}}\]</span></p></li>
+
+<li><p>Language modeling, Jelinek-Mercer smoothing using the corpus, 0.8 of the weight attached to the background probability, query likelihood. (<strong>LMJM</strong>)</p>
+
+<p>This uses <code>LMJelinekMercerSimilarity</code> in Apache Lucene, corresponding to the function provided.</p>
+
+<p>Formula:</p>
+<p><span class="math display">\[\rho_i = \lambda P(w|D) + (1-\lambda)P(w|C)\]</span></p><p>Implementation in <code>LMJelinekMercerSimilarity</code> (according to the score function in <code>LMJelinekMercerSimilarity</code> from Apache Lucene):</p>
+<p><span class="math display">\[log(1 + \frac{(1-\lambda)P(w|D)}{\lambda P(w|C)})\]</span></p></li>
+
+<li><p>(<em>Addition</em>) DFRSimilarity (<strong>dfr-basemodel-aftereffect-normalization</strong>)</p>
+
+<p><code>DFRSimilarity</code> is a flexible framework for scoring documents based on the <em>Divergence from Randomness</em> model. It uses three main components:</p>
+
+<ul>
+<li><p><em>Basic Model</em>: Determines how a term&rsquo;s distribution diverges from randomness.</p></li>
+
+<li><p><em>After Effect</em>: Adjusts scores based on redundancy in term occurrence.</p></li>
+
+<li><p><em>Normalization</em>: Accounts for document length or other properties.</p></li>
+
+<li><p>List of tried features:</p>
+
+<table>
+<thead>
+<tr>
+<th>BasicModel</th>
+<th>AffterEffect</th>
+<th>Normalization</th>
+<th>Display</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>G (Geometric Bose-Einstein model)</td>
+<td>L (Laplace smoothing)</td>
+<td>H2</td>
+<td><code>DFR-G-L-H2</code></td>
+</tr>
+
+<tr>
+<td>Ine (Tf-idf model of randomness, based on a mixture of Poisson and inverse document frequency)</td>
+<td>L</td>
+<td>H2</td>
+<td><code>DFR-Ine-L-H2</code></td>
+</tr>
+
+<tr>
+<td>In (Basic tf-idf model of randomness)</td>
+<td>L</td>
+<td>H1</td>
+<td><code>DFR-In-L-H1</code></td>
+</tr>
+
+<tr>
+<td>In</td>
+<td>L</td>
+<td>H2</td>
+<td><code>DFR-In-L-H2</code></td>
+</tr>
+
+<tr>
+<td>In</td>
+<td>L</td>
+<td>H3</td>
+<td><code>DFR-In-L-H3</code></td>
+</tr>
+
+<tr>
+<td>In</td>
+<td>L</td>
+<td>Z</td>
+<td><code>DFR-In-L-Z</code></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul></li>
+</ol>
+
+<h3 id="generating-indexes">Generating Indexes</h3>
+
+<p>According to <code>python -m pyserini.index.lucene -options</code>, we can generate indexes with different stemmer via setting the <code>--stemmer</code> option to one of {none, krovet, porter}</p>
+
+<h3 id="part-1-graphs-pure-ranking-functions">Part 1 Graphs (Pure ranking functions)</h3>
+
+<p><strong>Uninterpolated MAP</strong></p>
+
+<p><img src="./map_p1.png" alt="map_p1.png" /></p>
+
+<p><strong>Precision at 10</strong></p>
+
+<p><img src="./p10_p1.png" alt="p10_p1.png" /></p>
+
+<h3 id="part-1-graphs-with-dfr-similarity">Part 1 Graphs (With DFR Similarity)</h3>
+
+<p><strong>Uninterpolated MAP</strong></p>
+
+<p><img src="./map_dfr.png" alt="map_dfr.png" /></p>
+
+<p><strong>Precision at 10 (With DFR Similarity)</strong></p>
+
+<p><img src="./p10_dfr.png" alt="p10_dfr.png" /></p>
+
+<h3 id="analysis">Analysis</h3>
+
+<p><strong>Original MAP</strong></p>
+
+<ul>
+<li>The BM25 and LMMLE models paired with the Porter stemmer consistently show higher precision across various recall levels compared to their counterparts.</li>
+<li>Porter stemming generally outperforms Krovetz stemming and no stemming in most cases.</li>
+<li>The top three models are all using Porter stemmer, which indicates that <strong>aggressive stemming effectively reduces vocabulary mismatches and improves retrieval effectiveness</strong>.
+
+<ul>
+<li>According to my research, Krovetz Stemmer use a hybrid approach and focus on precision. It initally stems the words and checks the result stemmed words. If stemmed words aren&rsquo;t found in dictionary, the algorithm revert the stemmed words.</li>
+<li>Krovetz stemmer aims to maintain semantic and prevent over-stemming. In my opinion, this dataset isn&rsquo;t a very large one so that Porter stemmer have more term matches due to it&rsquo;s smaller vocabulary size.</li>
+</ul></li>
+</ul>
+
+<p><strong>Additional Analysis of DFR Models</strong></p>
+
+<ul>
+<li><p>After analysis of the original MAP graphs, I found that Porter stemmer with BM25, LMMLE model work really well. This led me to a question whether DFRSimilarity could match or even surpass these models in performance.</p></li>
+
+<li><p>After trying out different models&rsquo; performance, I delve into <code>BaseModelIn</code> and see what make this outcome. The solution is that our dataset&rsquo;s query are short, which means they contain fewer terms, placing greater emphasis on the informativeness of individual terms. <code>BaseModelIn</code> performs well in this scenario because its inverse document frequency weighting effectively prioritizes terms that are rare in the collection, aligning with the characteristics of short queries where each term&rsquo;s discriminative power is critical.</p>
+
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>BaseModelIn</th>
+<th>BM25</th>
+<th>LMMLE</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Foundation</td>
+<td>DF-weighted information</td>
+<td>Term frequency &amp; doc length</td>
+<td>Query likelihood</td>
+</tr>
+
+<tr>
+<td>Strengths</td>
+<td>Simple and effective</td>
+<td>Strong baseline for IR</td>
+<td>Balances document and global info</td>
+</tr>
+
+<tr>
+<td>Tuning Parameters</td>
+<td>none</td>
+<td><span class="math inline">\(k_1, b\)</span></td>
+<td><span class="math inline">\(\mu\)</span></td>
+</tr>
+
+<tr>
+<td>Conclusion (Best for)</td>
+<td>Standard IR task</td>
+<td>General-purpose retrieval</td>
+<td>Sparse or noisy data</td>
+</tr>
+</tbody>
+</table>
+</li>
+
+<li><p>Moreover, <code>NormalizationH3</code> delivers the best results because it incorporates collection-level statistics into the normalization process. By scaling term frequency using the ratio of total term frequency in the collection (<span class="math inline">\(\sum{tf}\)</span>) to document frequency (<span class="math inline">\(df\)</span>), NormalizationH3 adjusts for terms that are common across documents but still valuable for distinguishing relevance.</p></li>
+
+<li><p>Similarly, <code>NormalizationZ</code> also performs well because it directly scales term frequency proportionally by the document&rsquo;s length relative to the average document length. This simplicity is particularly beneficial in datasets with short queries, as it avoids over-complicating the normalization process and ensures that document length differences are accounted for without overly penalizing longer documents.</p>
+
+<table>
+<thead>
+<tr>
+<th>Normalization</th>
+<th>Formula (<span class="math inline">\(tfn\)</span> = Normalized <span class="math inline">\(tf\)</span>)</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>H1</td>
+<td><span class="math inline">\(tfn = \frac{tf}{tf + c \cdot dl / avgdl}\)</span></td>
+</tr>
+
+<tr>
+<td>H2</td>
+<td><span class="math inline">\(tfn = tf \cdot log(1 + c \cdot \frac{avgdl}{dl})\)</span></td>
+</tr>
+
+<tr>
+<td>H3</td>
+<td><span class="math inline">\(tfn = tf \cdot log(1 + \frac{\sum{tf}}{df})\)</span></td>
+</tr>
+
+<tr>
+<td>Z</td>
+<td><span class="math inline">\(tfn = tf \cdot \frac{avgdl}{dl}\)</span></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+
+<h2 id="part-2-learning-to-rank">Part 2: Learning to Rank</h2>
+
+<h3 id="what-i-did-1">What I did</h3>
+
+<p>Create three kinds of models with columns as follow.</p>
+
+<p>Feature list:</p>
+
+<ul>
+<li>query_id, doc_id: Id of the query/document</li>
+<li>{function}_{stemmer}: Ranking function with specific stemmer. Including:
+
+<ul>
+<li>bm25_porter, bm25_krovetz, bm25_none</li>
+<li>lmmle_porter, lmmle_krovetz, lmmle_none</li>
+<li>lmjm_porter, lmjm_krovetz, lmjm_none</li>
+</ul></li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Features</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>PorterModel</td>
+<td>[query_id, doc_id, bm25_porter, lmmle_porter, lmjm_porter]</td>
+<td>Select all features generated with Porter Stemmer because Porter Stemmer has the best performance over all the others</td>
+</tr>
+
+<tr>
+<td>CombinationModel</td>
+<td>[query_id, doc_id, bm25_porter, bm25_krovetz, bm25_none, lmmle_porter, lmmle_krovetz, lmmle_none, lmjm_porter, lmjm_krovetz, lmjm_none]</td>
+<td>Select all features generated</td>
+</tr>
+
+<tr>
+<td>Top2Model</td>
+<td>[query_id, doc_id, bm25_porter, lmmle_porter]</td>
+<td>Select the top 2 ranking functions + stemmer as features to see if it improves the precision</td>
+</tr>
+
+<tr>
+<td>PorterMinMaxModel</td>
+<td>[query_id, doc_id, bm25_porter_minmax, lmmle_porter_minmax, lmjm_porter_minmax]</td>
+<td>According to above three models, PorterModel have the best performance. So I use MinMax normalization to scale features for further improvement.</td>
+</tr>
+
+<tr>
+<td>PorterRobustModel</td>
+<td>[query_id, doc_id, bm25_porter_robust, lmmle_porter_robust, lmjm_porter_robust]</td>
+<td>Since I observed that PorterMinMaxModel performs very well, I use a robust scaler to handle outliers and test if it improves the performance further.</td>
+</tr>
+
+<tr>
+<td>PorterWithDFRH3Model_R</td>
+<td>[query_id, doc_id, bm25_porter_robust, lmmle_porter_robust, lmjm_porter_robust, dfr_in_l_h3_porter_robust]</td>
+<td>After evaluating various models, PorterWithDFRH3Model_R sets a new benchmark, breaking the previous performance records.</td>
+</tr>
+
+<tr>
+<td>PorterWithDFRH3Model_M</td>
+<td>[query_id, doc_id, bm25_porter_minmax, lmmle_porter_minmax, lmjm_porter_minmax, dfr_in_l_h3_porter_minmax]</td>
+<td>Run this model to compare with PorterWithDFRH3Model_R</td>
+</tr>
+
+<tr>
+<td>PorterWithDFRH3Model</td>
+<td>[query_id, doc_id, bm25_porter, lmmle_porter, lmjm_porter, dfr_in_l_h3_porter]</td>
+<td>Run this model to compare with PorterWithDFRH3Model_R</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="part-2-graphs-pure-ranking-functions">Part 2 Graphs (Pure ranking functions)</h3>
+
+<p><strong>Uninterpolated MAP</strong></p>
+
+<p><img src="./map_p2.png" alt="map_p2.png" /></p>
+
+<p><strong>Precision at 10</strong></p>
+
+<p><img src="./p10_p2.png" alt="p10_p2.png" /></p>
+
+<h3 id="part-2-graphs-models-performance-statistics">Part 2 Graphs (Models&rsquo; performance statistics)</h3>
+
+<p><strong>Uninterpolated MAP</strong></p>
+
+<p><img src="./map_model.png" alt="map_model.png" /></p>
+
+<p><strong>Precision at 10</strong></p>
+
+<p><img src="./p10_model.png" alt="p10_model.png" /></p>
+
+<h3 id="analysis-1">Analysis</h3>
+
+<ul>
+<li><p>It&rsquo;s obviously that which feature perform better on pure ranking function will be a better feature in model.</p></li>
+
+<li><p>While after doing some feature preprocessing, I found Robust Scaler outperforms MinMax normalization, so I decided to look into it.</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>MinMax</th>
+<th>Robust</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Formula</td>
+<td><span class="math inline">\(x_{scaled} = (x - x_{min}) / (x_{max} - x_{min})\)</span></td>
+<td><span class="math inline">\(x_{scaled} = (x - \text{median}) / \text{IQR}\)</span></td>
+</tr>
+
+<tr>
+<td>Outlier</td>
+<td>Outlier sensitive</td>
+<td><span class="math inline">\(\text{IQR} = Q3 - Q1\)</span> (minimize the impact of outliers)</td>
+</tr>
+</tbody>
+</table>
+</li>
+
+<li><p>Conclusion on Robust v.s. MinMax</p>
+
+<ul>
+<li>Outliers, such as a document with an unusually high term frequency or a short document skewing length normalization, can heavily influence MinMax scaling. Robust scaling mitigates this by focusing on the median and IQR.</li>
+<li>Robust scaling ensures that non-outlier values retain meaningful distinctions, critical for models combining diverse features.</li>
+<li><em>DFR’s reliance on document frequency and normalization (like H3) benefits from robust scaling</em> because it maintains a stable range for rare and common terms alike, avoiding distortions caused by extreme values.</li>
+</ul></li>
+</ul>
+
+<h2 id="appendix">Appendix</h2>
+
+<p>Numbers in the graphs:</p>
+
+<p>Part 1 Graph (Pure ranking functions) (un-interpolated map): https://
+Part 1 Graph (Pure ranking functions) (p@10):
+Part 1 Graph (With DFR similarity) (un-interpolated map):
+Part 1 Graph (With DFR similarity) (p@10):
+Part 2 Graphs (Pure ranking functions) (un-interpolated map):
+Part 2 Graphs (Pure ranking functions) (p@10):
+Part 2 Graphs (Models’ performance statistics) (un-interpolated map):
+Part 2 Graphs (Models’ performance statistics) (p@10):</p>
+
+
+    
+    <script
+      type="text/javascript"
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    
+    <script>hljs.highlightAll();</script>
+
+    <style>
+      body {
+          font-size: 14px;
+          line-height: 1.6;
+      }
+      .hljs {
+          background: none;
+      }
+    </style>
+
+  </body>
+</html>
+    
