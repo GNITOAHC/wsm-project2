@@ -1,0 +1,6 @@
+__pycache__
+.DS_Store
+data/
+WT2G/
+indexes/
+downloads/WT2G.tbz
