@@ -13,7 +13,7 @@ Download WT2G.tbz and extract to ./WT2G
 
 **./indexes/**
 
-Run `sh st2g_index.sh`
+Run `sh wt2g_index.sh`
 
 ## File descriptions:
 
